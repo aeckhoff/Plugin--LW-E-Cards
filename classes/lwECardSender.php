@@ -1,6 +1,6 @@
 <?php
 
-class lwECardBackend
+class lwECardSender
 {
 
     public class __construct()
@@ -33,8 +33,16 @@ class lwECardBackend
                 $this->reloadPage(lw_page::getInstance()->getUrl(array("cmd"=>"error")));
                 break;
                 
+            case "preview":
+                $this->showPreview();
+                break;
+                
             case "checkFormData":
-                $this->checkFormData();
+                $error = $this->checkFormData();
+                if (!$error) {
+                    $this->reloadPage(lw_page::getInstance()->getUrl(array("cmd"=>"preview")));
+                }
+                $this->buildECardForm($error);
                 break;
                 
             default:
@@ -48,7 +56,7 @@ class lwECardBackend
         return $this->output;
     }
 
-    private function buildECardForm()
+    private function buildECardForm($error)
     {
         $this->output = "Form";
     }
@@ -76,5 +84,10 @@ class lwECardBackend
     private function showErrorMessage()
     {
         $this->output = "errorMessage";
+    }
+    
+    private function showPreview()
+    {
+        $this->output = "showpreview";
     }
 }

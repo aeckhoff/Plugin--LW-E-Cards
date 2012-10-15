@@ -1,6 +1,6 @@
 <?php
 
-class lwECardFrontend
+class lwECardReceiver
 {
 
     public class __construct($hash)
@@ -23,6 +23,21 @@ class lwECardFrontend
     public class getOutput()
     {
         return $this->output;
+    }
+    
+    private function hashAvailable($hash)
+    {
+        return $bool;
+    }
+    
+    private function buildECard()
+    {
+        $this->output = "ECard Output";
+    }
+        
+    private function buildErrorMessage()
+    {
+        $this->output = "ErrorMessage";
     }
 
 }
