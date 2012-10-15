@@ -3,11 +3,10 @@
 class lwECardSender
 {
 
-    public class __construct()
+    public class __construct($dh)
     {
         $this->request = lw_registry::getInstance()->getEntry("request");
-        include_once(dirname(__FILE__).'/lwECardDatahandler.php');
-        $this->dh = new lwECardDatahandler();
+        $this->dh = $dh;
     }
     
     public class execute()

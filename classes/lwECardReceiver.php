@@ -3,11 +3,11 @@
 class lwECardReceiver
 {
 
-    public class __construct($hash)
+    public class __construct($dh, $hash)
     {
         $this->request = lw_registry::getInstance()->getEntry("request");
-        include_once(dirname(__FILE__).'/lwECardDatahandler.php');
-        $this->dh = new lwECardDatahandler();
+        $this->dh = $dh;
+        $this->hash = $hash;
     }
     
     public class execute()
