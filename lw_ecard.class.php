@@ -10,7 +10,7 @@ class lw_ecard extends lw_plugin
     
     public function buildPageOutput()
     {
-        include_once(dirname(__FILE__).'/lwECardDatahandler.php');
+        include_once(dirname(__FILE__).'/classes/lwECardDatahandler.php');
         $dh = new lwECardDatahandler();
 
         include_once(dirname(__FILE__).'/classes/lwECardCleaner.php');

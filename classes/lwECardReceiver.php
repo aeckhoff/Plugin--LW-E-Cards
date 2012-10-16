@@ -3,14 +3,14 @@
 class lwECardReceiver
 {
 
-    public class __construct($dh, $hash)
+    public function __construct($dh, $hash)
     {
         $this->request = lw_registry::getInstance()->getEntry("request");
         $this->dh = $dh;
         $this->hash = $hash;
     }
     
-    public class execute()
+    public function execute()
     {
         if ($this->hashAvailable($this->hash)) {
             $this->buildECard();
@@ -20,7 +20,7 @@ class lwECardReceiver
         }
     }
     
-    public class getOutput()
+    public function getOutput()
     {
         return $this->output;
     }

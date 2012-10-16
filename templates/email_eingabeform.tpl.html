@@ -1,0 +1,95 @@
+<style>
+    #container_email_form{
+        width: 300px;
+        margin: auto;
+        font-family: verdana;
+    }
+
+    .error{
+        border: 1px solid red;
+        font-size: 13px;
+        color: #fff;
+        background-color: darkred;
+        padding: 3px;
+    }
+
+    .inputelements .error{
+        background-color: #fff;
+        color: #000;
+        border: 1px dotted red;
+    }
+
+    .wrapper{margin-bottom: 15px;}
+
+    .inputelements{margin-bottom: 15px;}
+</style>
+
+<div id="container_email_form">
+    <form action="<!-- lw:var adress -->" method="POST" >  
+
+        
+        <div id="absender" class="wrapper">
+            <!-- lw:if error1 -->
+            <div class="error">Es muss ein Name eingetragen werden!</div>
+            <!-- lw:endif error1 -->
+            <div id="absenderLabel" class="label">
+                <h5>Absender Name :</h5>
+            </div>
+            <div class="inputelements">
+                <input type="text" name="name" value="<!-- lw:var valueName -->" size="45" class="<!-- lw:if error1 -->error<!-- lw:endif error1 -->"/>
+            </div>
+            
+            <!-- lw:if error2 -->
+            <div class="error">Absender E-Mail nicht korrekt!</div>
+            <!-- lw:endif error2 -->
+            <div id="absenderLabel" class="label">
+                <h5>Absender E-Mail :</h5>
+            </div>
+            <div class="inputelements">
+                <input type="text" name="absender" value="<!-- lw:var valueAbsender -->" size="45" class="<!-- lw:if error2 -->error<!-- lw:endif error2 -->"/>
+            </div>
+        </div>
+
+        <div id="empfaenger" class="wrapper">
+            <!-- lw:if error3 -->
+            <div class="error">Empf&auml;nger E-Mail nicht korrekt!</div>
+            <!-- lw:endif error3 -->
+            <div id="empfaengerLabel" class="label">
+                <h5>Empf&auml;nger E-Mail :</h5>
+            </div>
+            <div class="inputelements">
+                <textarea name="empfaenger" cols="33" rows="5" class="<!-- lw:if error3 -->error<!-- lw:endif error3 -->"><!-- lw:var valueEmpfaenger --></textarea>
+            </div>
+        </div>
+
+        <div id="nachricht" class="wrapper">
+            <!-- lw:if error4 -->
+            <div class="error">Der Betreff darf nicht leer sein und nicht l&auml;nger als 255 Zeichen!</div>
+            <!-- lw:endif error4 -->
+            <div id="betreffLabel" class="label">
+                <h5>Betreff :</h5>
+            </div>
+            <div class="inputelements">
+                <input type="text" name="betreff" value="<!-- lw:var valueBetreff -->" size="45" class="<!-- lw:if error4 -->error<!-- lw:endif error4 -->"/>
+            </div>
+            <!-- lw:if error5 -->
+            <div class="error">Sie m&uuml;ssen eine Nachricht eingeben mit max. 4000 Zeichen!</div>
+            <!-- lw:endif error5 -->
+            <div id="nachrichtLabel" class="label">
+                <h5>Ihre Nachricht :</h5>
+            </div>
+            <div class="inputelements">
+                <textarea name="nachricht" cols="33" rows="15" class="<!-- lw:if error5 -->error<!-- lw:endif error5 -->"><!-- lw:var valueNachricht --></textarea>    
+            </div>
+        </div>
+
+        <div id="submit" class="wrapper">
+            <div class="inputelements">
+                <input type="submit" value="Abschicken"/>   
+            </div>
+        </div>
+
+        <input type="hidden" name="sent" value="1"/>  
+
+    </form>  
+</div>

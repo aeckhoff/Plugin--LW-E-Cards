@@ -2,12 +2,12 @@
 
 class lwECardCleaner
 {
-    public class __construct($dh)
+    public function __construct($dh)
     {
         $this->dh = $dh;
     }
     
-    public class clean()
+    public function clean()
     {
     }
 }

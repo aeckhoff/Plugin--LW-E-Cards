@@ -1,0 +1,33 @@
+<style>
+    #edit{
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+    }
+    
+    #send{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+    }
+    
+    #send:hover,#edit:hover{cursor: pointer;}
+    
+    #container_ecard_msg{
+        width: 400px;
+        margin: auto;
+    }
+</style>
+<input id="edit" type="button" value="&Auml;nderungen vornehmen" onclick="self.location.href='<!-- lw:var edit_link -->';" />
+<input id="send" type="button" value="Ecard verschicken" onclick="self.location.href='<!-- lw:var send_link -->';" />
+
+<div id="container_ecard_msg">
+    <div id="ecard_absender_name">
+        <h4>E-Card von :</h4>
+        <p><!-- lw:var valueName --></p>
+    </div>
+    <div id="ecard_nachricht">
+        <h4>Ihre Nachricht :</h4>
+        <p><!-- lw:var valueNachricht --></p>
+    </div>
+</div>
