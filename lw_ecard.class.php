@@ -22,11 +22,27 @@ class lw_ecard extends lw_plugin
             $class = new lwECardReceiver($dh, $this->request->getRaw('hash'));
         }
         else {
-            include_once(dirname(__FILE__).'/classes/lwECardSender.php');
-            $class = new lwECardSender($dh,  $this->config);
+            if($this->checkIp() == true){
+                include_once(dirname(__FILE__).'/classes/lwECardSender.php');
+                $class = new lwECardSender($dh,  $this->config);
+            }else{
+                die("Zugriff verweigert!");
+            }        
         }
         $class->execute();
         return $class->getOutput();
+    }
+    
+    function checkIp()
+    {
+        $ip = $_SERVER['REMOTE_ADDR']; 
+        foreach ($this->config["ecard"]["allowed_ip"] as $allowedIp)
+        {
+            $ip_substr = substr($ip, 0, strlen($allowedIp));
+            if($ip_substr == $allowedIp){
+                return TRUE;
+            }
+        }
     }
     
 }
