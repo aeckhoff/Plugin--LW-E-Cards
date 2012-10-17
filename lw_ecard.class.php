@@ -23,7 +23,7 @@ class lw_ecard extends lw_plugin
         }
         else {
             include_once(dirname(__FILE__).'/classes/lwECardSender.php');
-            $class = new lwECardSender($dh);
+            $class = new lwECardSender($dh,  $this->config);
         }
         $class->execute();
         return $class->getOutput();

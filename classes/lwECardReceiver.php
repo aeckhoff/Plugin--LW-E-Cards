@@ -26,18 +26,30 @@ class lwECardReceiver
     }
     
     private function hashAvailable($hash)
-    {
-        return $bool;
+    {             
+        return $this->dh->loadECard($hash);
     }
     
     private function buildECard()
     {
-        $this->output = "ECard Output";
+        $dataArray = $this->dh->loadECard($this->hash);
+        
+        $template = file_get_contents(dirname(__FILE__) . '/../templates/ecard.tpl.html');
+        $tpl = new lw_te($template);
+
+        $tpl->reg("valueName", $dataArray["name"]);
+        $tpl->reg("valueNachricht", nl2br($dataArray["nachricht"]));
+    
+        $this->output = $tpl->parse();
     }
         
     private function buildErrorMessage()
     {
-        $this->output = "ErrorMessage";
+        $template = file_get_contents(dirname(__FILE__).'/../templates/error.tpl.html');
+        $tpl = new lw_te($template);
+        $tpl->reg("meldung", "Ihre ECard konnte nicht geladen werden.");
+        $tpl->reg("link", lw_page::getInstance()->getUrl());
+        $this->output = $tpl->parse();
     }
 
 }

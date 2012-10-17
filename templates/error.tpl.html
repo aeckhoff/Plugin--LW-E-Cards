@@ -1,0 +1,21 @@
+<style>
+    #container_error{
+        width: 99%;
+        height: 99%;
+        border: 1px solid red;
+        background-color: darkred;
+    }
+    
+    #container_error_msg{
+        width: 400px;
+        margin: 10% auto 0 auto;
+        color: #fff;
+    }
+</style>
+<div id="container_error">
+    <div id="container_error_msg">
+        <h2>Fehler:</h2>
+        <p><!-- lw:var meldung --></p>
+        <input id="button_error" type="button" value="OK" onclick="self.location.href='<!-- lw:var link -->';" />
+    </div>
+</div>

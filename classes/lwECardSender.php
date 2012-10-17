@@ -3,10 +3,11 @@
 class lwECardSender extends lw_object
 {
 
-    public function __construct($dh)
+    public function __construct($dh,$config)
     {
         $this->request = lw_registry::getInstance()->getEntry("request");
         $this->dh = $dh;
+        $this->config = $config;
     }
     
     public function execute()
@@ -18,14 +19,15 @@ class lwECardSender extends lw_object
                 break;
                 
             case "done":
+                unset($_SESSION["lw_ecard"]);
                 $this->showDoneMessage();
                 break;
                 
             case "sendECard":
                 $saveOK = $this->saveECard();
-                if ($saveOK) {
+                if ($saveOK == TRUE) {
                     $sendOK = $this->sendECard();
-                    if ($saveOK) {
+                    if ($sendOK == TRUE) {
                         $this->pageReload(lw_page::getInstance()->getUrl(array("cmd"=>"done")));
                     }
                 }
@@ -69,12 +71,13 @@ class lwECardSender extends lw_object
         }
         
         $tpl->reg("adress", lw_page::getInstance()->getUrl(array("cmd"=>"checkFormData")));
-        $tpl->reg("valueName", $this->request->getRaw("name"));
-        $tpl->reg("valueAbsender", $this->request->getRaw("absender"));
-        $tpl->reg("valueEmpfaenger", $this->request->getRaw("empfaenger"));
-        $tpl->reg("valueBetreff", $this->request->getRaw("betreff"));
-        $tpl->reg("valueNachricht", $this->request->getRaw("nachricht"));
-        
+        if(array_key_exists("lw_ecard", $_SESSION)){
+            $tpl->reg("valueName", $_SESSION["lw_ecard"]["name"]);
+            $tpl->reg("valueAbsender", $_SESSION["lw_ecard"]["absender"]);
+            $tpl->reg("valueEmpfaenger", $_SESSION["lw_ecard"]["empfaenger"]);
+            $tpl->reg("valueBetreff", $_SESSION["lw_ecard"]["betreff"]);
+            $tpl->reg("valueNachricht", $_SESSION["lw_ecard"]["nachricht"]);
+        }        
         $this->output = $tpl->parse();
     }
     
@@ -117,27 +120,45 @@ class lwECardSender extends lw_object
             $error["nachricht"] = 5;
         }
         
+        $this->setDataArray();
         return $error;
     }
     
     private function sendECard()
     {
-        return $ok;
+        include_once(dirname(__FILE__).'/zendEmail.php');
+        $zendEmail = new zendEmail($this->config);
+        $empfaenger = explode(",", preg_replace('/(\r\n|\r|\n)/s',',', $_SESSION["lw_ecard"]["empfaenger"]));
+        foreach ($empfaenger as $mail) {
+            $boolZendMail = $zendEmail->smtpMailer($_SESSION["lw_ecard"]['absender'],$mail,$_SESSION["lw_ecard"]['betreff'], utf8_decode($this->buildMessage())); //die($this->buildMessage());
+        }
+        if($boolZendMail == true){
+            return TRUE;
+        }
     }
     
     private function saveECard()
     {
-        return $ok;
+        $_SESSION["lw_ecard"]["hash"] = $this->dh->generateHash();
+        return $this->dh->saveECard($_SESSION["lw_ecard"]);
     }
     
     private function showDoneMessage()
     {
-        $this->output = "doneMessage";
+        $template = file_get_contents(dirname(__FILE__).'/../templates/done.tpl.html');
+        $tpl = new lw_te($template);
+        $tpl->reg("meldung", "Ihre ECard wurde versendet.");
+        $tpl->reg("link", lw_page::getInstance()->getUrl());
+        $this->output = $tpl->parse();
     }
     
     private function showErrorMessage()
     {
-        $this->output = "errorMessage";
+        $template = file_get_contents(dirname(__FILE__).'/../templates/error.tpl.html');
+        $tpl = new lw_te($template);
+        $tpl->reg("meldung", "Ihre ECard konnte nicht versendet werden.");
+        $tpl->reg("link", lw_page::getInstance()->getUrl());
+        $this->output = $tpl->parse();
     }
     
     private function showPreview()
@@ -145,10 +166,11 @@ class lwECardSender extends lw_object
         $template = file_get_contents(dirname(__FILE__) . '/../templates/ecard.tpl.html');
         $tpl = new lw_te($template);
         
+        $tpl->setIfVar("preview");
         $tpl->reg("edit_link", lw_page::getInstance()->getUrl());
         $tpl->reg("send_link", lw_page::getInstance()->getUrl(array("cmd"=>"sendECard")));
-        $tpl->reg("valueName", $this->request->getRaw("name"));
-        $tpl->reg("valueNachricht", $this->request->getRaw("nachricht"));
+        $tpl->reg("valueName", $_SESSION["lw_ecard"]["name"]);
+        $tpl->reg("valueNachricht", nl2br($_SESSION["lw_ecard"]["nachricht"]));
         
         
         $this->output = $tpl->parse();
@@ -163,5 +185,31 @@ class lwECardSender extends lw_object
             return TRUE;
         }
         return FALSE;
+    }
+    
+    function setDataArray()
+    {
+        $dataArray = array(
+            "name" => $this->request->getAlnum("name"),
+            "absender" => $this->request->getRaw("absender"),
+            "empfaenger" => $this->request->getRaw("empfaenger"),
+            "betreff" => $this->request->getAlnum("betreff"),
+            "nachricht" => $this->request->getRaw("nachricht")
+        );
+        
+        $_SESSION["lw_ecard"] = $dataArray;
+    }
+    
+    function buildMessage()
+    {
+        $template = file_get_contents(dirname(__FILE__).'/../templates/email.tpl.html');
+        $tpl = new lw_te($template);        
+
+        $tpl->reg('nachricht', utf8_encode($_SESSION["lw_ecard"]['nachricht']));
+        $tpl->reg('link', lw_page::getInstance()->getUrl(array('hash' => $_SESSION["lw_ecard"]['hash'])));
+        
+        $msg = $tpl->parse();
+        
+        return $msg;
     }
 }

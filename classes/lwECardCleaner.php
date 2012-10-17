@@ -9,5 +9,6 @@ class lwECardCleaner
     
     public function clean()
     {
+        $this->dh->deleteECard(time());
     }
 }
