@@ -1,4 +1,8 @@
 <style>
+    #einleitender_text_formular{
+        font-size: 13px;
+    }
+    
     #container_email_form{
         width: 300px;
         margin: auto;
@@ -27,7 +31,14 @@
 <div id="container_email_form">
     <form action="<!-- lw:var adress -->" method="POST" >  
 
-        
+        <div id="einleitender_text_formular">
+            <p>
+                Bitte f&uuml;llen Sie dieses Formular komplett aus, um Ihre ECard zu verschicken.<br><br>
+                Wollen Sie mehr als einen Empf&auml;nger eintragen, dann tragen Sie bitte einen
+                Empf&auml;nger pro zeile ein.
+            </p>
+        </div>
+
         <div id="absender" class="wrapper">
             <!-- lw:if error1 -->
             <div class="error">Es muss ein Name eingetragen werden!</div>
@@ -38,7 +49,7 @@
             <div class="inputelements">
                 <input type="text" name="name" value="<!-- lw:var valueName -->" size="45" class="<!-- lw:if error1 -->error<!-- lw:endif error1 -->"/>
             </div>
-            
+
             <!-- lw:if error2 -->
             <div class="error">Absender E-Mail nicht korrekt!</div>
             <!-- lw:endif error2 -->

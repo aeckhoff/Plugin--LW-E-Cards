@@ -11,6 +11,10 @@
         right: 5px;
     }
     
+    #einleitender_text_preview{
+        font-size: 14px;
+    }
+    
     #send:hover,#edit:hover{cursor: pointer;}
     
     #container_ecard_msg{
@@ -19,6 +23,11 @@
     }
 </style>
 <!-- lw:if preview -->
+<div id="einleitender_text_preview">
+    <p>
+        Dies ist eine Vorschau Ihrer ECard, wie alle Empf&auml;nger die ECard erhalten werden.
+    </p>
+</div>
 <input id="edit" type="button" value="&Auml;nderungen vornehmen" onclick="self.location.href='<!-- lw:var edit_link -->';" />
 <input id="send" type="button" value="Ecard verschicken" onclick="self.location.href='<!-- lw:var send_link -->';" />
 <!-- lw:endif preview -->

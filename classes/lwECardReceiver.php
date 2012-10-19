@@ -3,11 +3,12 @@
 class lwECardReceiver
 {
 
-    public function __construct($dh, $hash)
+    public function __construct($dh, $hash,$plugin,$repository)
     {
         $this->request = lw_registry::getInstance()->getEntry("request");
         $this->dh = $dh;
         $this->hash = $hash;
+        $this->pluginData = $repository->plugins()->loadPluginData($plugin["pluginname"], $plugin["oid"]);
     }
     
     public function execute()
@@ -33,8 +34,8 @@ class lwECardReceiver
     private function buildECard()
     {
         $dataArray = $this->dh->loadECard($this->hash);
-        
-        $template = file_get_contents(dirname(__FILE__) . '/../templates/ecard.tpl.html');
+       
+        $template = $this->pluginData["parameter"]["preview_template"];
         $tpl = new lw_te($template);
 
         $tpl->reg("valueName", $dataArray["name"]);

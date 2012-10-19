@@ -3,11 +3,13 @@
 class lwECardSender extends lw_object
 {
 
-    public function __construct($dh,$config)
+    public function __construct($dh,$config,$plugin,$repository)
     {
         $this->request = lw_registry::getInstance()->getEntry("request");
         $this->dh = $dh;
         $this->config = $config;
+        $this->pluginData = $repository->plugins()->loadPluginData($plugin["pluginname"], $plugin["oid"]);
+        
     }
     
     public function execute()
@@ -59,7 +61,7 @@ class lwECardSender extends lw_object
 
     private function buildECardForm($error = false)
     {
-        $template = file_get_contents(dirname(__FILE__) . '/../templates/email_eingabeform.tpl.html');
+        $template = $this->pluginData["parameter"]["formular_template"];
         $tpl = new lw_te($template);
         
         if($error != false){
@@ -140,12 +142,13 @@ class lwECardSender extends lw_object
     private function saveECard()
     {
         $_SESSION["lw_ecard"]["hash"] = $this->dh->generateHash();
+        $_SESSION["lw_ecard"][] = $this->pluginData["parameter"]["auto_delete"];
         return $this->dh->saveECard($_SESSION["lw_ecard"]);
     }
     
     private function showDoneMessage()
     {
-        $template = file_get_contents(dirname(__FILE__).'/../templates/done.tpl.html');
+        $template = $this->pluginData["parameter"]["sent_template"];
         $tpl = new lw_te($template);
         $tpl->reg("meldung", "Ihre ECard wurde versendet.");
         $tpl->reg("link", lw_page::getInstance()->getUrl());
@@ -154,7 +157,7 @@ class lwECardSender extends lw_object
     
     private function showErrorMessage()
     {
-        $template = file_get_contents(dirname(__FILE__).'/../templates/error.tpl.html');
+        $template = $this->pluginData["parameter"]["error_template"];
         $tpl = new lw_te($template);
         $tpl->reg("meldung", "Ihre ECard konnte nicht versendet werden.");
         $tpl->reg("link", lw_page::getInstance()->getUrl());
@@ -163,7 +166,7 @@ class lwECardSender extends lw_object
     
     private function showPreview()
     {
-        $template = file_get_contents(dirname(__FILE__) . '/../templates/ecard.tpl.html');
+        $template = $this->pluginData["parameter"]["preview_template"];
         $tpl = new lw_te($template);
         
         $tpl->setIfVar("preview");
@@ -202,7 +205,7 @@ class lwECardSender extends lw_object
     
     function buildMessage()
     {
-        $template = file_get_contents(dirname(__FILE__).'/../templates/email.tpl.html');
+        $template = $this->pluginData["parameter"]["mail_template"];
         $tpl = new lw_te($template);        
 
         $tpl->reg('nachricht', utf8_encode($_SESSION["lw_ecard"]['nachricht']));
