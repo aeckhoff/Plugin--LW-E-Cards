@@ -13,22 +13,21 @@ class zendEmail
      * @return boolean
      * @throws Exception 
      */
-    function smtpMailer($absender,$to, $subject, $message) {
+    function smtpMailer($absender,$to, $subject, $message) 
+    {
         require_once($this->config['path']['framework'] . "Zend/Mail.php");
         require_once($this->config['path']['framework'] . "Zend/Mail/Transport/Smtp.php");
         $mconfig = array();
 
-        $from = $absender;//$this->configuration['mail']['from']; // absender gmx
+        $from = $this->config['ecard']['from']; // absender gmx
         $mconfig["auth"] = "login";
-        if ($mailconfig['ssl']) {
-            $mconfig["ssl"] = "tls";#$this->configuration['mail']['ssl'];
+        if ($this->config['ecard']['ssl']) {
+            //$mconfig["ssl"] = $this->configuration['ecard']['ssl'];
         }
-        $mconfig["username"] = "";//$this->configuration['mail']['username']; // username gmx
-        $mconfig["password"] = "";//$this->configuration['mail']['password']; // pw gmx
-        $mconfig["port"] = "25";//$this->configuration['mail']['port'];
-        $server = "smtp.1und1.de";//$this->configuration['mail']['server']; // smtp.gmx.net
-
-
+        $mconfig["username"] = $this->config['ecard']['username']; // username gmx
+        $mconfig["password"] = $this->config['ecard']['password']; // pw gmx
+        $mconfig["port"] = $this->config['ecard']['port'];
+        $server = $this->config['ecard']['server']; // smtp.gmx.net
 
         $subject = trim($subject);
         $transport = new Zend_Mail_Transport_Smtp($server, $mconfig);
@@ -41,7 +40,9 @@ class zendEmail
             $mail->setSubject($subject);
             $mail->send($transport);
             return true;
-        } catch (Zend_Mail_Exception $e) {
+        } 
+        catch (Zend_Mail_Exception $e) {
+            die ($e->getMessage());
             throw new Exception($e->getMessage());
         }
     }
