@@ -47,8 +47,6 @@ class backend extends lw_object
     function backend_view()
     {
         $data = $this->repository->plugins()->loadPluginData($this->pluginname, $this->oid);
-        #echo $this->pluginname."------------------".  $this->oid;die();
-        #print_r($data);die();
         $form = $this->_buildAdminForm();
         foreach($data['parameter'] as $key=>$value) {
             $data['parameter'][$key] = htmlentities($value);
@@ -64,7 +62,6 @@ class backend extends lw_object
         $tpl->reg("codemirrorTHEMEcss", $this->config["url"]["media"]."js/codemirror-2.34/theme/lesser-dark.css");
         $tpl->reg("jqUI", $this->config["url"]["media"]."jquery/ui/jquery-ui-1.8.7.custom.min.js");
         $tpl->reg("jqUIcss", $this->config["url"]["media"]."jquery/ui/css/smoothness/jquery-ui-1.8.7.custom.css");
-        #$tpl->reg("test", "HAAAAAAALLLO");
         $tpl->reg("form", $form->render());
         return $tpl->parse();
     }
