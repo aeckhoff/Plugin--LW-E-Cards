@@ -1,26 +1,14 @@
 <style>
-    #lw_fe_inputelement_lw_formular_template{width: 800px;height: 600px;}
-    #tabs ul li a{color: #fff;}
+    #lw_fe_inputelement_lw_formular_template,
+    #lw_fe_inputelement_lw_preview_template,
+    #lw_fe_inputelement_lw_sent_template,
+    #lw_fe_inputelement_lw_error_template,
+    #lw_fe_inputelement_lw_mail_template 
+     { width: 950px; height: 500px; }
+    
+    #tabs ul li a { color: #000; background-color:transparent; }
     .lw_content{width: 110%!important;}
-    .CodeMirror {border: 1px solid black; font-size:13px;}
-    .activeline {background: #e8f2ff !important;}
-
-    .CodeMirror-fullscreen {
-        display: block;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%;
-        z-index: 9999;
-        background-color:#DFDFDF;
-    }
 </style>
-<script type="text/javascript" src="<!-- lw:var codemirrorJS -->"></script>
-<script type="text/javascript" src="<!-- lw:var codemirrorMODE1 -->"></script>
-<script type="text/javascript" src="<!-- lw:var codemirrorMODE2 -->"></script>
-<script type="text/javascript" src="<!-- lw:var codemirrorMODE3 -->"></script>
-<script type="text/javascript" src="<!-- lw:var codemirrorMODE4 -->"></script>
-<link rel="stylesheet" href="<!-- lw:var codemirrorCSS -->" />
-<link rel="stylesheet" href="<!-- lw:var codemirrorTHEMEcss -->" />
 <script type="text/javascript" src="<!-- lw:var jqUI -->"></script>
 <link rel="stylesheet" href="<!-- lw:var jqUIcss -->" />
 
@@ -32,100 +20,17 @@
 
 <fieldset class="lwadminform">
 
-    <legend class="lwadminform">lw_directorynavigator Basisdaten bearbeiten</legend>
+    <legend class="lwadminform">E-Card Basisdaten bearbeiten</legend>
     
     <div id="tabs">
         <ul>
-            <li><a href="#lw_formular_template">Formular Template</a></li>
-            <li><a href="#lw_preview_template">Preview / ECard Template</a></li>
-            <li><a href="#lw_sent_template">Sent Template</a></li>
-            <li><a href="#lw_error_template">Error Template</a></li>
-            <li><a href="#lw_mail_template">Mail Template</a></li>
-            <li><a href="#lw_auto_delete">Auto delete</a></li>
+            <li><a href="#lw_formular_template">Formular</a></li>
+            <li><a href="#lw_preview_template">Vorschau / ECard</a></li>
+            <li><a href="#lw_sent_template">versendet</a></li>
+            <li><a href="#lw_error_template">Fehlermeldung</a></li>
+            <li><a href="#lw_mail_template">Mail</a></li>
+            <li><a href="#lw_auto_delete">Grunddaten</a></li>
         </ul>
         <!-- lw:var form -->
     </div>
 </fieldset>
-
-<script language="javascript" type="text/javascript">
-    var editor = CodeMirror.fromTextArea(document.getElementById("lw_fe_inputelement_lw_formular_template"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        onCursorActivity: function() {
-            editor.setLineClass(hlLine, null, null);
-            hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
-        }
-        //extraKeys: {
-        //    "F11": function(cm) {
-        //        setFullScreen(cm, !isFullScreen(cm));
-        //    },
-        //    "Esc": function(cm) {
-        //        if (isFullScreen(cm)) setFullScreen(cm, false);
-        //    }
-        //}
-    });
-    var hlLine = editor.setLineClass(0, "activeline");
-    var editor = CodeMirror.fromTextArea(document.getElementById("lw_fe_inputelement_lw_preview_template"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        onCursorActivity: function() {
-            editor.setLineClass(hlLine, null, null);
-            hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
-        }
-    });
-    var hlLine = editor.setLineClass(0, "activeline");
-    var editor = CodeMirror.fromTextArea(document.getElementById("lw_fe_inputelement_lw_sent_template"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        onCursorActivity: function() {
-            editor.setLineClass(hlLine, null, null);
-            hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
-        }
-    });
-    var hlLine = editor.setLineClass(0, "activeline");
-    var editor = CodeMirror.fromTextArea(document.getElementById("lw_fe_inputelement_lw_error_template"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        onCursorActivity: function() {
-            editor.setLineClass(hlLine, null, null);
-            hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
-        }
-    });
-    var hlLine = editor.setLineClass(0, "activeline");
-    var editor = CodeMirror.fromTextArea(document.getElementById("lw_fe_inputelement_lw_mail_template"), {
-        lineNumbers: true,
-        lineWrapping: true,
-        onCursorActivity: function() {
-            editor.setLineClass(hlLine, null, null);
-            hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
-        }
-    });
-    var hlLine = editor.setLineClass(0, "activeline");
-    //editor.setOption("theme", "lesser-dark");
-
-    //function isFullScreen(cm) {
-    //    return /\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className);
-    //}
-    //function winHeight() {
-    //    return window.innerHeight || (document.documentElement || document.body).clientHeight;
-    //}
-    //function setFullScreen(cm, full) {
-    //    var wrap = cm.getWrapperElement(), scroll = cm.getScrollerElement();
-    //    if (full) {
-    //        wrap.className += "CodeMirror-fullscreen";
-    //        scroll.style.height = winHeight() + "px";
-    //        document.documentElement.style.overflow = "hidden";
-    //    } else {
-    //        wrap.className = wrap.className.replace("CodeMirror-fullscreen", "");
-    //        scroll.style.height = "";
-    //        document.documentElement.style.overflow = "";
-    //    }
-    //    cm.refresh();
-    //}
-    //CodeMirror.connect(window, "resize", function() {
-    //    var showing = document.body.getElementsByClassName("CodeMirror-fullscreen")[0];
-    //    if (!showing) return;
-    //    showing.CodeMirror.getScrollerElement().style.height = winHeight() + "px";
-    //});
- 
-</script>

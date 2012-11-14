@@ -53,13 +53,6 @@ class backend extends lw_object
         }
         $form->setData($data['parameter']);
         $tpl = new lw_te(file_get_contents(dirname(__FILE__) . '/../templates/backendform.tpl.html'));
-        $tpl->reg("codemirrorJS", $this->config["url"]["media"]."js/codemirror-2.34/lib/codemirror.js");
-        $tpl->reg("codemirrorCSS", $this->config["url"]["media"]."js/codemirror-2.34/lib/codemirror.css");
-        $tpl->reg("codemirrorMODE1", $this->config["url"]["media"]."js/codemirror-2.34/mode/xml/xml.js");
-        $tpl->reg("codemirrorMODE2", $this->config["url"]["media"]."js/codemirror-2.34/mode/javascript/javascript.js");
-        $tpl->reg("codemirrorMODE3", $this->config["url"]["media"]."js/codemirror-2.34/mode/css/css.js");
-        $tpl->reg("codemirrorMODE4", $this->config["url"]["media"]."js/codemirror-2.34/mode/htmlmixed/htmlmixed.js");
-        $tpl->reg("codemirrorTHEMEcss", $this->config["url"]["media"]."js/codemirror-2.34/theme/lesser-dark.css");
         $tpl->reg("jqUI", $this->config["url"]["media"]."jquery/ui/jquery-ui-1.8.7.custom.min.js");
         $tpl->reg("jqUIcss", $this->config["url"]["media"]."jquery/ui/css/smoothness/jquery-ui-1.8.7.custom.css");
         $tpl->reg("form", $form->render());
@@ -71,14 +64,14 @@ class backend extends lw_object
         $form = new lw_fe();
         $form->setRenderer()
                 ->setID('lw_listtool')
-                ->setIntroduction('Basisdaten der Liste')
+                ->setIntroduction('Basisdaten & Vorlagen der E-Card')
                 ->setDefaultErrorMessage('Es sind Fehler aufgetreten!')
                 ->setAction($this->buildUrl(array("pcmd"=>"save")));
         
         $form->createElement("textarea")
                 ->setName('formular_template')
                 ->setID('lw_formular_template');
-                #->setLabel('Formular Template :');
+                #->setLabel('Vorlage:');
         
         $form->createElement("textarea")
                 ->setName('preview_template')

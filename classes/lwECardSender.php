@@ -6,6 +6,7 @@ class lwECardSender extends lw_object
     public function __construct($dh,$config,$plugin,$repository)
     {
         $this->request = lw_registry::getInstance()->getEntry("request");
+        $this->response= lw_registry::getInstance()->getEntry("response");
         $this->dh = $dh;
         $this->config = $config;
         $this->pluginData = $repository->plugins()->loadPluginData($plugin["pluginname"], $plugin["oid"]);
@@ -61,6 +62,21 @@ class lwECardSender extends lw_object
 
     private function buildECardForm($error = false)
     {
+        $js.='  tinyMCE.init({'.PHP_EOL;
+        $js.='      mode : "textareas",'.PHP_EOL;
+        $js.='      theme : "advanced",'.PHP_EOL;
+        $js.='      editor_selector : "mceEditor",'.PHP_EOL;
+        $js.='      editor_deselector : "mceNoEditor",'.PHP_EOL;
+        $js.='      theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,",'.PHP_EOL;
+        $js.='      theme_advanced_buttons2 : "undo,redo,|,link,unlink,|,forecolor,|,hr,|,sub,sup,|,charmap,|,help",'.PHP_EOL;
+        $js.='      theme_advanced_buttons3 : "",'.PHP_EOL;
+        $js.='      theme_advanced_toolbar_location : "top",'.PHP_EOL;
+        $js.='      theme_advanced_toolbar_align : "left"'.PHP_EOL;
+        $js.='  });'.PHP_EOL;
+        $this->response->usejQuery();
+        $this->response->addHeaderItems("jsfile", $this->config['url']['media']."tinymce/jscripts/tiny_mce/tiny_mce.js");
+        $this->response->addHeaderItems("js", $js);
+        
         $template = $this->pluginData["parameter"]["formular_template"];
         $tpl = new lw_te($template);
         
