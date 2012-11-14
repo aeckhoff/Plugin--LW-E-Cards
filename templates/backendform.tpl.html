@@ -13,6 +13,7 @@
         z-index: 9999;
         background-color:#DFDFDF;
     }
+    .active{background-color: #777;}
 </style>
 <script type="text/javascript" src="<!-- lw:var codemirrorJS -->"></script>
 <script type="text/javascript" src="<!-- lw:var codemirrorMODE1 -->"></script>
@@ -26,17 +27,21 @@
 
 <script language="javascript" type="text/javascript">
     $(document).ready(function() {
-       $( "#tabs" ).tabs();
+        $( "#tabs" ).tabs();
+        $("#tabs li a").click(function() {
+            $("#tabs li a").removeClass('active');
+            $(this).addClass("active");
+        });
     });
 </script>
 
 <fieldset class="lwadminform">
 
     <legend class="lwadminform">lw_directorynavigator Basisdaten bearbeiten</legend>
-    
+
     <div id="tabs">
         <ul>
-            <li><a href="#lw_formular_template">Formular Template</a></li>
+            <li><a href="#lw_formular_template" class="active">Formular Template</a></li>
             <li><a href="#lw_preview_template">Preview / ECard Template</a></li>
             <li><a href="#lw_sent_template">Sent Template</a></li>
             <li><a href="#lw_error_template">Error Template</a></li>
