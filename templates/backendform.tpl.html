@@ -14,7 +14,11 @@
 
 <script language="javascript" type="text/javascript">
     $(document).ready(function() {
-       $( "#tabs" ).tabs();
+        $( "#tabs" ).tabs();
+        $("#tabs li a").click(function() {
+            $("#tabs li a").removeClass('active');
+            $(this).addClass("active");
+        });
     });
 </script>
 
